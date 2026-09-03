@@ -1,0 +1,31 @@
+
+## Task3 DATA ANALYSIS
+import numpy as np
+df = pd.read_csv("data/trends_20240115.csv")
+
+print(df.shape)
+
+print("Average score:",df["score"].mean())
+print("Average comments",df["num_comments"].mean())
+print("Mean score",np.mean(df["score"]))
+print("Median score",np.median(df["score"]))
+print("Standard deviation score",np.std(df["score"]))
+print("Highest score",np.max(df["score"]))
+print("Lowest score",np.min(df["score"]))
+print("Which category has the most stories:",df["category"].value_counts().idxmax())
+index = np.argmax(df["num_comments"].values)
+print("Title:",df.loc[index,"title"])
+print("Number of comments:",df.loc[index,"num_comments"])
+
+## ADD new columns
+
+df["engagement"] = df["num_comments"]/(df["score"]+1)
+
+avg_score = df["score"].mean()
+df["is_popular"] = df["score"]>avg_score
+
+## New csv file
+df.to_csv("data/trends_20240115_analysis.csv", index = False)
+print("Data saved to data/trends_20240115_analysis.csv")
+
+
