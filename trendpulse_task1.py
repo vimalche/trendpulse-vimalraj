@@ -52,7 +52,7 @@ for id in story_ids[:125]:
                          "author" : story.get("by"),
                          "collected at" : datetime.now(timezone.utc).strftime("%Y-%m-%d %H-%M-%S")
                          }
-    stories.append(story) 
+    stories.append(extacted_story) 
 
   else:
     print(f"Error: {response.status_code}")
