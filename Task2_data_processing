@@ -1,0 +1,45 @@
+
+##Task 2:: cleaning the data set
+
+import pandas as pd
+from numpy import astype
+import json
+
+## load json file
+
+with open('data/trends_20240115.json', 'r') as f:
+    data = json.load(f)
+
+df = pd.DataFrame(data)
+print("Rows before cleaning",len(df))
+
+## cleaning the data
+
+# 1. Remove duplicates from id
+df = df.drop_duplicates(subset = ["id"])
+print("Rows after Removing Duplicates",len(df))
+# 2.missing values
+df = df.dropna(subset = ["id","title","score"])
+print("Rows after removing null",len(df))
+# 3. Data types
+df["id"] = pd.to_numeric(df["id"], errors = "coerce")
+df["score"] = pd.to_numeric(df["score"], errors = "coerce")
+df = df.dropna(subset=["id","score"])
+df["id"] = df["id"].astype(int)
+df["score"] = df["score"].astype(int)
+
+
+# 4.Low quality
+df = df.drop(df[df["score"] < 5].index)
+print("Rows after Removing Low quality",len(df))
+# 5. White spaces
+
+df["title"] = df["title"].str.strip()
+df["title"] = df["title"].str.lower()
+
+df["category"] = df["title"].apply(get_category)
+print(df["category"].value_counts())
+
+## Data added to csv file
+df.to_csv("data/trends_20240115.csv", index = False)
+print("Data saved to data/trends_20240115.csv")
