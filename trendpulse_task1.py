@@ -34,7 +34,7 @@ def get_category(title):
   elif any(word in title_lower for word in['science','physics','space','biology','math','research']):
     return "SCIENCE"
   else:
-    return "OTHER"
+    return "ENTERTAINMENT"
 
 headers = {"User-Agent": "TrendPulse/1.0"}
 stories = []
